@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chat Messages Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- Topbar: tabs (links), global select (rechts), global download (helemaal rechts) -->
+    <div class="topbar">
+      <div class="tabs" role="tablist" aria-label="Views">
+        <button id="tabSessions" class="tab" role="tab" aria-controls="view-sessions" aria-selected="false">Sessions</button>
+        <button id="tabChats" class="tab active" role="tab" aria-controls="view-chats" aria-selected="true">Chat messages</button>
+		<button id="tabKills" class="tab" role="tab" aria-controls="view-kills" aria-selected="false">Kills</button>
+		<button id="tabStats" class="tab" role="tab" aria-controls="view-stats" aria-selected="false">Statistics</button>
+      </div>
+      <div class="header-actions">
+        <button id="globalSelectBtn" class="btn">Select files</button>
+        <input id="globalFile" type="file" accept=".txt,.csv,.log" multiple style="display:none" />
+        <button id="globalDl" class="btn">Download all (Interactive HTML)</button>
+      </div>
+    </div>
+
+    <!-- ===== Sessions panel ===== -->
+    <section id="view-sessions" role="tabpanel" aria-labelledby="tabSessions" hidden>
+<div class="toolbar">
+  <div class="pill mono" id="sessStatus">No files loaded</div>
+  <div class="pill mono" id="ipdbStatus">IP DB: not loaded</div>
+  <button id="sessResolve" class="btn">Resolve countries (online)</button>
+  <div class="pill mono" id="geoStatus" aria-live="polite"></div>
+  <div class="hint">
+    Upload one or more session logs (.txt / .log) like
+    <span class="mono">player_authentication_DD.MM.YYYY.txt</span>
+  </div>
+  <div class="sr-only" id="sess-aria-live" aria-live="polite"></div>
+</div>
+
+
+      <div class="filter controls" style="margin-top:10px">
+        <label for="sessQ">Filter</label>
+        <input id="sessQ" type="text" placeholder="Type to filter..." />
+        <span class="pill mono" id="sessCount"></span>
+        <div class="pages">
+          <label for="sessPageSize">Rows/page</label>
+          <select id="sessPageSize">
+            <option value="100">100</option>
+            <option value="250" selected>250</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+          </select>
+          <button id="sessPrevPage" class="btn">Prev</button>
+          <span class="pill mono" id="sessPageInfo">Page 1/1</span>
+          <button id="sessNextPage" class="btn">Next</button>
+        </div>
+      </div>
+
+      <!-- (Download knoppen binnen de tab zijn verwijderd) -->
+
+      <table id="sessTable" class="sessions" role="table" aria-label="Sessions">
+        <colgroup>
+          <col class="col-name" />
+		  <col class="col-ip" />
+		  <col class="col-country" />
+		  <col class="col-gv" />
+          <col class="col-am" />
+          <col class="col-gm" />
+          <col class="col-rate" />
+          <col class="col-snaps" />
+          <col class="col-ping" />
+          <col class="col-start" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th><button class="sess-sort" data-key="Name" aria-sort="none">Name</button></th>
+            <th><button class="sess-sort" data-key="IP" aria-sort="none">IP</button></th>
+			<th><button class="sess-sort" data-key="Country" aria-sort="none">Country</button></th>
+            <th><button class="sess-sort" data-key="Game Version" aria-sort="none">Game Version</button></th>
+            <th><button class="sess-sort" data-key="Allied model" aria-sort="none">Allied model</button></th>
+            <th><button class="sess-sort" data-key="German model" aria-sort="none">German model</button></th>
+            <th><button class="sess-sort" data-key="Rate" aria-sort="none">Rate</button></th>
+            <th><button class="sess-sort" data-key="Snaps" aria-sort="none">Snaps</button></th>
+            <th><button class="sess-sort" data-key="Ping" aria-sort="none">Ping</button></th>
+            <th><button class="sess-sort" data-key="Started on" aria-sort="none">Started on</button></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="10" class="empty">No data yet. Upload files above.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== Chat messages panel ===== -->
+    <section id="view-chats" role="tabpanel" aria-labelledby="tabChats">
+      <div class="toolbar">
+        <div class="pill mono" id="status">No files loaded</div>
+        <div class="hint">Upload one or more <strong>.txt</strong>, <strong>.csv</strong> or <strong>.log</strong> files like <span class="mono">player_messages_DD.MM.YYYY.txt</span></div>
+        <div class="sr-only" id="aria-live" aria-live="polite"></div>
+      </div>
+
+      <div class="filter controls" style="margin-top:10px">
+        <label for="q">Filter</label>
+        <input id="q" type="text" placeholder="Type to filter..." />
+        <span class="pill mono" id="count"></span>
+        <div class="pages">
+          <label for="pageSize">Rows/page</label>
+          <select id="pageSize">
+            <option value="100">100</option>
+            <option value="250" selected>250</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+          </select>
+          <button id="prevPage" class="btn">Prev</button>
+          <span class="pill mono" id="pageInfo">Page 1/1</span>
+          <button id="nextPage" class="btn">Next</button>
+        </div>
+      </div>
+
+      <!-- (Download knoppen binnen de tab zijn verwijderd) -->
+
+      <table id="table" class="chat" role="table" aria-label="Chat messages">
+        <colgroup>
+          <col class="col-message" />
+          <col class="col-sender" />
+          <col class="col-recipient" />
+          <col class="col-scope" />
+          <col class="col-date" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th><button class="sort" data-key="Message" aria-sort="none">Message</button></th>
+            <th><button class="sort" data-key="Sender"  aria-sort="none">Sender</button></th>
+            <th><button class="sort" data-key="Recipient" aria-sort="none">Recipient</button></th>
+            <th><button class="sort" data-key="Scope" aria-sort="none">Scope</button></th>
+            <th><button class="sort" data-key="Date" aria-sort="none">Date</button></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="5" class="empty">No data yet. Upload files above.</td></tr>
+        </tbody>
+      </table>
+    </section>
+	
+	<!-- ===== Kills panel ===== -->
+<section id="view-kills" role="tabpanel" aria-labelledby="tabKills" hidden>
+  <div class="toolbar">
+    <div class="pill mono" id="kStatus">No files loaded</div>
+    <div class="hint">Upload one or more kills logs (.txt / .log) like <span class="mono">player_kills_DD.MM.YYYY.txt</span></div>
+    <div class="sr-only" id="k-aria-live" aria-live="polite"></div>
+  </div>
+
+  <div class="filter controls" style="margin-top:10px">
+    <label for="kQ">Filter</label>
+    <input id="kQ" type="text" placeholder="Type to filter..." />
+    <span class="pill mono" id="kCount"></span>
+    <div class="pages">
+      <label for="kPageSize">Rows/page</label>
+      <select id="kPageSize">
+        <option value="100">100</option>
+        <option value="250" selected>250</option>
+        <option value="500">500</option>
+        <option value="1000">1000</option>
+      </select>
+      <button id="kPrevPage" class="btn">Prev</button>
+      <span class="pill mono" id="kPageInfo">Page 1/1</span>
+      <button id="kNextPage" class="btn">Next</button>
+    </div>
+  </div>
+
+  <table id="killsTable" class="kills" role="table" aria-label="Kills">
+    <colgroup>
+      <col class="col-attacker" />
+      <col class="col-victim" />
+      <col class="col-team" />
+      <col class="col-weapon" />
+      <col class="col-mod" />
+      <col class="col-damage" />
+      <col class="col-part" />
+	  <col class="col-time" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th><button class="kill-sort" data-key="Attacker" aria-sort="none">Attacker</button></th>
+        <th><button class="kill-sort" data-key="Victim" aria-sort="none">Victim</button></th>
+        <th><button class="kill-sort" data-key="Team" aria-sort="none">Team</button></th>
+        <th><button class="kill-sort" data-key="Weapon" aria-sort="none">Weapon</button></th>
+        <th><button class="kill-sort" data-key="MOD" aria-sort="none">MOD</button></th>
+        <th><button class="kill-sort" data-key="Damage" aria-sort="none">Damage</button></th>
+        <th><button class="kill-sort" data-key="Body Part" aria-sort="none">Body Part</button></th>
+		<th><button class="kill-sort" data-key="Time" aria-sort="none">Time</button></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="8" class="empty">No data yet. Upload files above.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===== Statistics panel ===== -->
+<section id="view-stats" role="tabpanel" aria-labelledby="tabStats" hidden>
+	<div class="toolbar">
+	  <div class="pill mono" id="stStatus">Waiting for kills data…</div>
+
+	  <div class="hint">Statistics are computed from the Kills tab</div>
+	  <div class="sr-only" id="st-aria-live" aria-live="polite"></div>
+	</div>
+
+	<div class="filter controls controls--stats" style="margin-top:10px">
+	  <!-- Filter blijft in DOM voor de JS, maar is onzichtbaar via CSS -->
+	  <label for="stQ">Filter</label>
+	  <input id="stQ" type="text" placeholder="Type to filter players..." />
+
+	  <!-- Links: aantal -->
+	  <span class="pill mono" id="stCount"></span>
+
+	  <!-- Midden: range-knoppen -->
+	  <div class="seg" aria-label="Time range for statistics">
+		<button class="btn seg-btn" data-range="1">Last day</button>
+		<button class="btn seg-btn" data-range="7">7 days</button>
+		<button class="btn seg-btn" data-range="30">30 days</button>
+		<button class="btn seg-btn active" data-range="all">All time</button>
+	  </div>
+
+	  <!-- Rechts: paginering -->
+	  <div class="pages">
+		<label for="stPageSize">Rows/page</label>
+		<select id="stPageSize">
+		  <option value="100">100</option>
+		  <option value="250" selected>250</option>
+		  <option value="500">500</option>
+		  <option value="1000">1000</option>
+		</select>
+		<button id="stPrevPage" class="btn">Prev</button>
+		<span class="pill mono" id="stPageInfo">Page 1/1</span>
+		<button id="stNextPage" class="btn">Next</button>
+	  </div>
+	</div>
+
+<table id="statsTable" class="stats" role="table" aria-label="Statistics">
+  <colgroup>
+    <col class="col-player" />
+    <col class="col-kills" />
+    <col class="col-deaths" />
+    <col class="col-headshots" />
+    <col class="col-ks" />
+    <col class="col-ds" />
+    <col class="col-damage" />
+    <col class="col-kdr" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th><button class="stat-sort" data-key="Player" aria-sort="none">Player</button></th>
+      <th><button class="stat-sort" data-key="Kills" aria-sort="none">Kills</button></th>
+      <th><button class="stat-sort" data-key="Deaths" aria-sort="none">Deaths</button></th>
+      <th><button class="stat-sort" data-key="Headshots" aria-sort="none">Headshots</button></th>
+      <th><button class="stat-sort" data-key="Killstreak" aria-sort="none">Killstreak</button></th>
+      <th><button class="stat-sort" data-key="Deathstreak" aria-sort="none">Deathstreak</button></th>
+      <th><button class="stat-sort" data-key="Damage" aria-sort="none">Damage</button></th>
+      <th><button class="stat-sort" data-key="KDR" aria-sort="none">KDR</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td colspan="8" class="empty">No data yet. Upload kills first.</td></tr>
+  </tbody>
+</table>
+
+</section>
+
+
+	
+  </div>
+
+  <script src="app.js"></script>
+
+  <!-- JSON bootstrap blocks worden alleen toegevoegd in de gedownloade interactieve HTML -->
+  <!-- <script id="bootstrap" type="application/json">[...]</script>
+       <script id="bootstrapState" type="application/json">[...]</script>
+       <script id="bootstrapSess" type="application/json">[...]</script>
+       <script id="bootstrapSessState" type="application/json">[...]</script> -->
+</body>
+</html>

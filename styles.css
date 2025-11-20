@@ -1,0 +1,246 @@
+:root{ --bg:#0f1b2d; --panel:#13233a; --panel-2:#152844; --text:#dbe7ff; --muted:#8fa6c9; --accent:#3b82f6; --border:#213a61; --row-alt:#0e1726; --row-recipient: rgba(34,197,94,.12); }
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    .wrap{max-width:100%;margin:0 auto;padding:24px 20px 48px}
+
+    /* ---------- Topbar ---------- */
+    .topbar{display:flex;align-items:center;gap:12px;margin:0 0 14px}
+    .tabs{display:flex;gap:8px;align-items:center}
+    .tab{
+      appearance:none; cursor:pointer; border:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+      color:var(--text); padding:10px 14px; border-radius:12px; line-height:1;
+      font-weight:700; letter-spacing:.01em;
+      transition:border-color .15s ease, box-shadow .15s ease, transform .06s ease, background .2s ease;
+      box-shadow:0 1px 0 rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    .tab:hover{ border-color:var(--accent); background:linear-gradient(180deg, rgba(59,130,246,.18), rgba(59,130,246,.10)); box-shadow:0 0 0 3px rgba(59,130,246,.18); transform:translateY(-1px) }
+    .tab:active{ transform:translateY(0) }
+    .tab.active{ background:linear-gradient(180deg, rgba(59,130,246,.22), rgba(59,130,246,.12)); border-color:rgba(59,130,246,.6) }
+    .header-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+
+    /* Buttons */
+    .btn{
+      appearance:none; cursor:pointer; border:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+      color:var(--text); padding:10px 12px; border-radius:10px; line-height:1;
+      transition:border-color .15s ease, box-shadow .15s ease, transform .06s ease, background .2s ease;
+      box-shadow:0 1px 0 rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    .btn:hover{ border-color:var(--accent); background:linear-gradient(180deg, rgba(59,130,246,.18), rgba(59,130,246,.10)); box-shadow:0 0 0 3px rgba(59,130,246,.18); transform:translateY(-1px); }
+    .btn:active{ transform:translateY(0); box-shadow:0 0 0 2px rgba(59,130,246,.12) inset; }
+    .btn:focus-visible{ outline:none; box-shadow:0 0 0 3px rgba(59,130,246,.35); }
+    .btn[disabled]{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+
+
+	/* Segmented range buttons (Statistics) */
+	.seg { display:flex; gap:8px; align-items:center; }
+	.seg .seg-btn{ padding:8px 10px; border-radius:8px; }
+	.seg .seg-btn.active{
+	  background:linear-gradient(180deg, rgba(59,130,246,.22), rgba(59,130,246,.12));
+	  border-color:rgba(59,130,246,.6);
+	  box-shadow:0 0 0 2px rgba(59,130,246,.18);
+	}
+
+	/* Controls row layout for Statistics: links count • midden range • rechts pagination */
+	.controls--stats{
+	  display:grid;
+	  grid-template-columns:1fr auto 1fr;
+	  align-items:center;
+	  gap:10px;
+	}
+	/* midden en rechts uitlijnen */
+	.controls--stats .seg{ justify-self:center; }
+	.controls--stats .pages{ justify-self:end; }
+
+	/* Verberg de globale filter (label+input) voor Statistics */
+	.controls--stats label[for="stQ"],
+	.controls--stats #stQ { display:none !important; }
+
+
+
+    .toolbar{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .pill{background:var(--panel-2);color:var(--text);border:1px solid var(--border);padding:6px 10px;border-radius:8px}
+    .hint{margin-left:auto;color:var(--muted);font-size:.9rem}
+
+    .filter{margin-top:10px;display:flex;gap:10px;align-items:center}
+    label{color:var(--muted)}
+    input[type="text"]{background:var(--panel-2);color:var(--text);border:1px solid var(--border);padding:8px 10px;border-radius:8px;outline:none}
+    input[type="text"]:focus{border-color:var(--accent)}
+
+    table{width:100%;margin-top:14px;border-collapse:separate;border-spacing:0;table-layout:fixed}
+    thead th{background:var(--panel);position:sticky;top:0;z-index:1;font-weight:600;text-align:left;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:10px 12px}
+    thead th:first-child{border-left:1px solid var(--border);border-top-left-radius:10px}
+    thead th:last-child{border-right:1px solid var(--border);border-top-right-radius:10px}
+
+    tbody td{padding:6px 10px;border-left:1px solid var(--border);border-right:1px solid var(--border);vertical-align:middle}
+    tbody tr{background:var(--panel-2);transition:outline-color .15s ease}
+    tbody tr:nth-child(even){background:var(--row-alt)}
+    tbody tr.has-recipient{background:var(--row-recipient)!important}
+    tbody tr:hover{outline:1px solid rgba(59,130,246,.25);outline-offset:-1px}
+    tbody tr:last-child td:first-child{border-bottom-left-radius:10px}
+    tbody tr:last-child td:last-child{border-bottom-right-radius:10px}
+
+    .message{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height:1.25;font-size:.92rem}
+    .sender,.recipient,.scope,.date{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    .name-chip,.date-chip,.scope-badge{
+      display:inline-block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      border-radius:9999px;padding:2px 6px;border:1px solid var(--border);background:rgba(255,255,255,.03)
+    }
+    .name-chip{font-weight:600}
+    .date-chip{font-family:ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;opacity:.9}
+    .scope-badge{font-weight:700;letter-spacing:.02em;font-size:.82rem}
+
+	/* Sort buttons */
+	.sort, .sess-sort, .kill-sort, .stat-sort{
+	  cursor:pointer;display:inline-flex;align-items:center;
+	  padding:6px 10px;border:1px solid var(--border);border-radius:8px;
+	  background:transparent;color:var(--text);
+	  transition:background .15s ease,border-color .15s ease,box-shadow .15s ease,transform .06s ease;
+	}
+	.sort::after, .sess-sort::after, .kill-sort::after, .stat-sort::after{
+	  content:'';display:inline-block;margin-left:6px;width:0;height:0;
+	  border-left:4px solid transparent;border-right:4px solid transparent;border-top:6px solid currentColor;
+	  opacity:.6;vertical-align:middle
+	}
+	.sort[aria-sort="asc"]::after, .sess-sort[aria-sort="asc"]::after, .kill-sort[aria-sort="asc"]::after, .stat-sort[aria-sort="asc"]::after{
+	  transform:rotate(180deg)
+	}
+	.sort:hover, .sess-sort:hover, .kill-sort:hover, .stat-sort:hover{
+	  background:rgba(255,255,255,.05);border-color:var(--accent);box-shadow:0 0 0 2px rgba(59,130,246,.18)
+	}
+	.sort:focus-visible, .sess-sort:focus-visible, .kill-sort:focus-visible, .stat-sort:focus-visible{
+	  outline:none;box-shadow:0 0 0 3px rgba(59,130,246,.35)
+	}
+	.sort.active, .sess-sort.active, .kill-sort.active, .stat-sort.active{
+	  background:linear-gradient(180deg, rgba(59,130,246,.22), rgba(59,130,246,.12));
+	  border-color:rgba(59,130,246,.6)
+	}
+
+    .empty{margin:18px 0;color:var(--muted)}
+    .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+    .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .pages{display:flex;gap:8px;align-items:center;margin-left:auto}
+    select{background:var(--panel-2);color:var(--text);border:1px solid var(--border);padding:6px 8px;border-radius:8px}
+
+	/* Kolomfilters in de tabelkop */
+	thead tr.colfilters th { padding:6px 8px; background: var(--panel-2); }
+	.col-filter{
+	  width:100%;
+	  box-sizing:border-box;
+	  background:var(--panel-2);
+	  color:var(--text);
+	  border:1px solid var(--border);
+	  padding:6px 8px;
+	  border-radius:6px;
+	  outline:none;
+	  font-size:.85rem;
+	}
+	.col-filter:focus{ border-color:var(--accent); box-shadow:0 0 0 2px rgba(59,130,246,.18); }
+
+
+    /* Column widths: Chat */
+    .chat col.col-message{width:52%}
+    .chat col.col-sender{width:16%}
+    .chat col.col-recipient{width:14%}
+    .chat col.col-scope{width:8%}
+    .chat col.col-date{width:200px}
+
+    /* Column widths: Sessions */
+    .sessions col.col-name{width:24%}
+    .sessions col.col-ip{width:10%}
+	.sessions col.col-country{ width: 15%; }
+    .sessions col.col-gv{width:9%}
+    .sessions col.col-am{width:18%}
+    .sessions col.col-gm{width:18%}
+    .sessions col.col-rate{width:5%}
+    .sessions col.col-snaps{width:5%}
+    .sessions col.col-ping{width:5%}
+    .sessions col.col-start{width:200px}
+	
+	/* Column widths: Kills */
+	.kills col.col-time{width:200px}
+	.kills col.col-attacker{width:20%}
+	.kills col.col-victim{width:20%}
+	.kills col.col-team{width:10%}
+	.kills col.col-weapon{width:14%}
+	.kills col.col-mod{width:12%}
+	.kills col.col-damage{width:8%}
+	.kills col.col-part{width:16%}
+
+	/* Optioneel: compacter zoals de andere tabellen */
+	table.kills{ font-size: 0.75rem; }
+
+	/* Column widths: Statistics */
+	.stats col.col-player{width:24%}
+	.stats col.col-kills{width:10%}
+	.stats col.col-deaths{width:10%}
+	.stats col.col-headshots{width:10%}
+	.stats col.col-ks{width:10%}
+	.stats col.col-ds{width:10%}
+	.stats col.col-damage{width:14%}
+	.stats col.col-kdr{width:10%}
+
+
+	/* Compact zoals de rest */
+	table.stats{ font-size: 0.75rem; }
+
+	
+	
+	/* --- Correct target the tables themselves --- */
+	table.chat{ font-size: 0.75rem; }      /* Chat kleiner */
+	table.sessions{ font-size: 0.75rem; }  /* Sessions kleiner */
+
+	/* --- Laat alles onder de tabel de font-size erven i.p.v. vaste rem-waarden --- */
+	table.chat th,
+	table.chat td,
+	table.chat .message,
+	table.chat .name-chip,
+	table.chat .date-chip,
+	table.chat .scope-badge{
+	  font-size: inherit !important;
+	}
+
+	table.sessions th,
+	table.sessions td,
+	table.sessions .name-chip,
+	table.sessions .date-chip{
+	  font-size: inherit !important;
+	}
+
+	/* Optioneel: extra compactheid / verticale centrering */
+	table.chat .message{ line-height: 1.05 !important; }
+	table.chat tbody td{ padding: 5px 10px; vertical-align: middle; }
+
+	table.sessions tbody td{ padding: 4px 8px; vertical-align: middle; }
+	table.sessions thead th{ padding: 6px 8px; }
+	
+	/* Forceer emoji-font voor vlaggen */
+	.emoji{
+	  font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",
+				   "Twemoji Mozilla","EmojiOne Color","Segoe UI Symbol", emoji;
+	  line-height: 1;
+	}
+
+	/* Vlag-icoon styling */
+	.flag {
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: -0.15em;
+    margin-right: 6px;
+  }
+
+	/* Ongeldige skin zacht rood */
+	.invalid-skin{
+	  background: rgba(239, 68, 68, .12) !important; /* zacht rood */
+	  box-shadow: inset 0 0 0 1px rgba(239, 68, 68, .25);
+	}
+
+	/* Verberg globale zoekfilter per tab, maar laat kolomfilters & paginatie staan */
+	label[for="q"],     #q,
+	label[for="sessQ"], #sessQ,
+	label[for="kQ"],    #kQ,
+	label[for="stQ"],   #stQ { display: none !important; }
